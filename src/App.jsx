@@ -38,35 +38,36 @@ function App() {
     }
 
     function checkLength() {
-        const title = form.title.length
-        const body = form.body.length
-        console.log("title", title)
-        console.log("body", body)
-        setError({
-            title: false,
-            body: false
+        const title = form.title.length > 100
+        const body = form.body.length > 200
+        
+        setError(prev => {
+            let newTitle = false
+            let newBody = false
+            if (title) {
+                newTitle = true
+            }
+            if (body) {
+                newBody = true
+            }
+
+            const newError = {
+                title: newTitle,
+                body: newBody
+            }
+
+            return {
+                ...prev,
+                ...newError
+            }
         })
 
-
-        if (title > 10) {
-            setError({
-                title: true,
-                body: false
-            })
-            console.log(error)
-            return false
-        }
-
-        if (body > 20) {
-            setError({
-                title: false,
-                body: true
-            })
-            console.log(error)
+        if (title || body) {
             return false
         }
 
         return true
+
     }
 
     function handleAddPost() {
